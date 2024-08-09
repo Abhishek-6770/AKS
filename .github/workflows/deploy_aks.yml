@@ -1,0 +1,54 @@
+name: Deploy AKS Cluster
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+    
+jobs:
+  setup-terraform:
+    name: Set Up and Deploy AKS Cluster
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Set up Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: 1.5.0  # Replace with the Terraform version you are using
+
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }} # Store your Azure credentials in GitHub Secrets
+
+    - name: Initialize Terraform
+      run: terraform init
+
+    - name: Validate Terraform
+      run: terraform validate
+
+    - name: Plan Terraform
+      run: terraform plan -out aks.tfplan
+
+    - name: Apply Terraform
+      if: github.ref == 'refs/heads/main'
+      run: terraform apply -auto-approve aks.tfplan
+
+    - name: Generate Kubeconfig File
+      run: echo "$(terraform output kube_config)" > ./azurek8s
+
+    - name: Clean Kubeconfig
+      run: |
+        sed -i '1d;$d' ./azurek8s
+
+    - name: Set KUBECONFIG Environment Variable
+      run: echo "KUBECONFIG=$PWD/azurek8s" >> $GITHUB_ENV
+
+    - name: Verify Kubernetes Nodes
+      run: kubectl get nodes
+
