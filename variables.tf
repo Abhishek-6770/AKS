@@ -19,9 +19,9 @@ variable "cluster_name" {
 }
 
 variable "aks_service_principal_app_id" {
-  default = ""
+  default = "3f993d24-e5e9-45ef-91ee-8fe87bbc6bee"
 }
 
 variable "aks_service_principal_client_secret" {
-  default = ""
+  default = "DV28Q~fyBOcIltID_.uylNv9u-GjHVpPPULVsb05"
 }
