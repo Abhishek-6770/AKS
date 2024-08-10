@@ -53,9 +53,8 @@ jobs:
     - name: Generate Kubeconfig File
       run: echo "$(terraform output kube_config)" > ./azurek8s
 
-    - name: Clean Kubeconfig
-      run: |
-        sed -i '1d;$d' ./azurek8s
+    - name: Remove <<EOT and EOT from azurek8s
+      run: sed -i '' '1d;$d' ./azurek8s
 
     - name: Set KUBECONFIG Environment Variable
       run: echo "KUBECONFIG=$PWD/azurek8s" >> $GITHUB_ENV
