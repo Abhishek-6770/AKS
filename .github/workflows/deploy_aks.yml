@@ -55,15 +55,15 @@ jobs:
     - name: Generate Kubeconfig File
       run: echo "$(terraform output kube_config)" > ./azurek8s
 
-    - name: Remove <<EOT and EOT from azurek8s
-      run: sed -i '' '1d;$d' ./azurek8s
-
-    - name: Set KUBECONFIG Environment Variable
-      run: echo "KUBECONFIG=$PWD/azurek8s" >> $GITHUB_ENV
-
+    - name: Remove <<EOT and EOT from azurek8s and regenerate kubeconfig
+      run: |
+        echo "$(terraform output kube_config)" | sed '1d;$d' > ./azurek8s
+        cat ./azurek8s # Optional: View the file to ensure it's correct
+    
     - name: Validate Kubeconfig YAML
       run: |
         kubectl get nodes --kubeconfig=./azurek8s || echo "Invalid kubeconfig format."
+
 
     - name: Run kubectl get nodes
       run: kubectl get nodes --kubeconfig=./azurek8s
