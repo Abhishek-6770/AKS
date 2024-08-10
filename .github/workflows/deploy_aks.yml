@@ -17,7 +17,7 @@ jobs:
       run: |
         if ! command -v node &> /dev/null
         then
-          brew install node
+          arch -arm64 brew install node
         fi
         
     - name: Checkout Repository
