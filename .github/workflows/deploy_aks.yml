@@ -10,7 +10,7 @@ on:
 jobs:
   setup-terraform:
     name: Set Up and Deploy AKS Cluster
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
     - name: Checkout Repository
