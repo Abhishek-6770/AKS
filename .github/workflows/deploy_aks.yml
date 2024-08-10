@@ -61,6 +61,10 @@ jobs:
     - name: Set KUBECONFIG Environment Variable
       run: echo "KUBECONFIG=$PWD/azurek8s" >> $GITHUB_ENV
 
-    - name: Verify Kubernetes Nodes
-      run: kubectl get nodes
+    - name: Validate Kubeconfig YAML
+      run: |
+        kubectl get nodes --kubeconfig=./azurek8s || echo "Invalid kubeconfig format."
+
+    - name: Run kubectl get nodes
+      run: kubectl get nodes --kubeconfig=./azurek8s
 
