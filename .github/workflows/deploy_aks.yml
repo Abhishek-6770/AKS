@@ -38,10 +38,10 @@ jobs:
       
     - name: Import Existing Resource Group
       run: |
-        terraform import azurerm_resource_group.k8s /subscriptions/2213e8b1-dbc7-4d54-8aff-b5e315df5e5b/resourceGroups/664-9e325ace-create-an-aks-cluster-in-azure-with-t || echo "Resource group already managed."
+        terraform import azurerm_resource_group.k8s /subscriptions/80ea84e8-afce-4851-928a-9e2219724c69/resourceGroups/664-0fa20f63-create-an-aks-cluster-in-azure-with-t|| echo "Resource group already managed."
     - name: Import Existing AKS Cluster (if needed)
       run: |
-        terraform import azurerm_kubernetes_cluster.k8s /subscriptions/2213e8b1-dbc7-4d54-8aff-b5e315df5e5b/resourceGroups/664-9e325ace-create-an-aks-cluster-in-azure-with-t/providers/Microsoft.ContainerService/managedClusters/k8sguru || echo "AKS cluster already managed."
+        terraform import azurerm_kubernetes_cluster.k8s /subscriptions/80ea84e8-afce-4851-928a-9e2219724c69/resourceGroups/664-0fa20f63-create-an-aks-cluster-in-azure-with-t/providers/Microsoft.ContainerService/managedClusters/k8sguru || echo "AKS cluster already managed."
     - name: Validate Terraform
       run: terraform validate
 
