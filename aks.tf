@@ -19,8 +19,8 @@ resource "azurerm_kubernetes_cluster" "k8s" {
   }
 
   service_principal {
-    client_id     = var.PRINCIPLEID
-    client_secret = var.CLIENT
+    client_id     = var.principleID
+    client_secret = var.client
   }
 
   network_profile {
