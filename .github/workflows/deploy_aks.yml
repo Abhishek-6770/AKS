@@ -42,10 +42,10 @@ jobs:
         
     - name: Import Existing Resource Group
       run: |
-        terraform import azurerm_resource_group.k8s /subscriptions/${{ env.subscription }}/resourceGroups/${{ env.resourceGroups }}|| echo "Resource group already managed."
+        terraform import azurerm_resource_group.k8s /subscriptions/${{ env.SUBSCRIPTION }}/resourceGroups/${{ env.RESOURCEGROUPS }}|| echo "Resource group already managed."
       env:
-        subscription: ${{ env.subscription }}
-        resourceGroups: ${{ env.resourceGroups }}
+        SUBSCRIPTION: ${{ env.SUBSCRIPTION }}
+        RESOURCEGROUPS: ${{ env.RESOURCEGROUPS }}
 
     - name: Validate Terraform
       run: terraform validate
