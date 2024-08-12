@@ -49,6 +49,9 @@ jobs:
 
     - name: Validate Terraform
       run: terraform validate
+      env:
+        RESOURCEGROUPS: ${{ secrets.RESOURCEGROUPS }}
+        LOCATION: ${{ env.LOCATION }}
 
     - name: Plan Terraform
       run: terraform plan -out aks.tfplan
