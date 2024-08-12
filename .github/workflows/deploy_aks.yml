@@ -38,10 +38,10 @@ jobs:
       
     - name: Import Existing Resource Group
       run: |
-        terraform import azurerm_resource_group.k8s /subscriptions/80ea84e8-afce-4851-928a-9e2219724c69/resourceGroups/664-3cbcbfa5-create-an-aks-cluster-in-azure-with-t|| echo "Resource group already managed."
+        terraform import azurerm_resource_group.k8s /subscriptions/${{ env.subscription }}/resourceGroups/${{ env.resourceGroups }}|| echo "Resource group already managed."
     - name: Import Existing AKS Cluster (if needed)
       run: |
-        terraform import azurerm_kubernetes_cluster.k8s /subscriptions/80ea84e8-afce-4851-928a-9e2219724c69/resourceGroups/664-3cbcbfa5-create-an-aks-cluster-in-azure-with-t/providers/Microsoft.ContainerService/managedClusters/k8sguru || echo "AKS cluster already managed."
+        terraform import azurerm_kubernetes_cluster.k8s /subscriptions/${{ env.subscription }}/resourceGroups/${{ env.resourceGroups }}/providers/Microsoft.ContainerService/managedClusters/k8sguru || echo "AKS cluster already managed."
     - name: Validate Terraform
       run: terraform validate
 
@@ -55,16 +55,5 @@ jobs:
     - name: Generate Kubeconfig File
       run: echo "$(terraform output kube_config)" > ./azurek8s
 
-    - name: Remove <<EOT and EOT from azurek8s and regenerate kubeconfig
-      run: |
-        echo "$(terraform output kube_config)" | sed '1d;$d' > ./azurek8s
-        cat ./azurek8s # Optional: View the file to ensure it's correct
-    
-    - name: Validate Kubeconfig YAML
-      run: |
-        kubectl get nodes --kubeconfig=./azurek8s || echo "Invalid kubeconfig format."
 
-
-    - name: Run kubectl get nodes
-      run: kubectl get nodes --kubeconfig=./azurek8s
 
