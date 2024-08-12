@@ -19,8 +19,8 @@ variable "cluster_name" {
 }
 
 variable "aks_service_principal_app_id" {
-  default = " "
+  default = var.principleID
 }
 variable "aks_service_principal_client_secret" {
-  default = " "
+  default = var.Client
 }
