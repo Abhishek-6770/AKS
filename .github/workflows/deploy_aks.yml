@@ -1,3 +1,4 @@
+
 name: Deploy AKS Cluster
 
 on:
@@ -35,7 +36,10 @@ jobs:
 
     - name: Initialize Terraform
       run: terraform init
-      
+      env:
+        aks_service_principal_app_id: ${{ env.PRINCIPLEID }}
+        aks_service_principal_client_secret: ${{ secretes.CLIENT }}
+        
     - name: Import Existing Resource Group
       run: |
         terraform import azurerm_resource_group.k8s /subscriptions/${{ env.subscription }}/resourceGroups/${{ env.resourceGroups }}|| echo "Resource group already managed."
