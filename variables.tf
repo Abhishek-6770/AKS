@@ -23,5 +23,5 @@ variable "aks_service_principal_app_id" {
 }
 
 variable "aks_service_principal_client_secret" {
-  default = "${{ secrets.client }}
+  default = "${{ secrets.client }}"
 }
