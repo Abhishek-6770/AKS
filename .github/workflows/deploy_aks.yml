@@ -38,7 +38,7 @@ jobs:
       run: terraform init
       env:
         aks_service_principal_app_id: ${{ env.PRINCIPLEID }}
-        aks_service_principal_client_secret: ${{ secretes.CLIENT }}
+        aks_service_principal_client_secret: ${{ secrets.CLIENT }}
         
     - name: Import Existing Resource Group
       run: |
