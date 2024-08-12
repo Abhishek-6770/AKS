@@ -19,7 +19,7 @@ resource "azurerm_kubernetes_cluster" "k8s" {
   }
 
   service_principal {
-    client_id     = var.aks_service_principal_app_id 
+    client_id     = var.aks_service_principal_app_id
     client_secret = var.aks_service_principal_client_secret
   }
 
