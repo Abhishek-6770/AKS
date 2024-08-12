@@ -19,9 +19,8 @@ variable "cluster_name" {
 }
 
 variable "aks_service_principal_app_id" {
-  default = ${{ env.principleID }}
-}
+  default = " "
 
 variable "aks_service_principal_client_secret" {
-  default = ${{ secrets.client }}
+  default = " "
 }
