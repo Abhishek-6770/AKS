@@ -52,6 +52,9 @@ jobs:
       env:
         TF_VAR_resource_group_name: ${{ secrets.RESOURCEGROUPS }}
         TF_VAR_resource_group_location: ${{ env.LOCATION }}
+        TF_VAR_principleID: ${{ env.PRINCIPLEID }}
+        TF_VAR_client: ${{ secrets.CLIENT }}
+        
 
     - name: Plan Terraform
       run: terraform plan -out aks.tfplan
