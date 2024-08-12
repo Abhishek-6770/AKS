@@ -19,9 +19,9 @@ variable "cluster_name" {
 }
 
 variable "aks_service_principal_app_id" {
-  default = "548884b8-4d05-459b-b2a2-9ecb77556cdd"
+  default = "${{ env.principleID }}"
 }
 
 variable "aks_service_principal_client_secret" {
-  default = "uEW8Q~CXJyXS8JkWdGIT1~BCogJl-StseAxBych2"
+  default = "${{ secrets.client }}
 }
