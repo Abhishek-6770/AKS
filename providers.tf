@@ -17,6 +17,6 @@ provider "azurerm" {
 
 # Import the Azure Resource Group
 resource "azurerm_resource_group" "k8s" {
-  name     = env("RESOURCEGROUPS")
-  location = env("LOCATION")
+  name     = var.resource_group_name
+  location = var.resource_group_location
 }
