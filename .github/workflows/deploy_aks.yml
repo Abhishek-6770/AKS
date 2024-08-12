@@ -43,9 +43,9 @@ jobs:
     - name: Import Existing Resource Group
       run: |
         terraform import azurerm_resource_group.k8s /subscriptions/${{ env.subscription }}/resourceGroups/${{ env.resourceGroups }}|| echo "Resource group already managed."
-    - name: Import Existing AKS Cluster (if needed)
-      run: |
-        terraform import azurerm_kubernetes_cluster.k8s /subscriptions/${{ env.subscription }}/resourceGroups/${{ env.resourceGroups }}/providers/Microsoft.ContainerService/managedClusters/k8sguru || echo "AKS cluster already managed."
+      env:
+        RESOURCE_GROUP: ${{ env.resource_group_name }}
+
     - name: Validate Terraform
       run: terraform validate
 
