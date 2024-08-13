@@ -20,6 +20,7 @@ variable "cluster_name" {
 
 variable "aks_service_principal_app_id" {
   type = string
+  default = "5a5fb2b3-6513-4bd0-8d81-ecbb001324bb"
 }
 
 variable "aks_service_principal_client_secret" {
