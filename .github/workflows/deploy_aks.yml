@@ -38,7 +38,7 @@ jobs:
         TF_VAR_resource_group_name: $(RESOURCEGROUPS)
         TF_VAR_resource_group_location: $(LOCATION)
        
-        TF_VAR_aks_service_principal_app_id: $(PRINCIPLEID)
+        
         TF_VAR_aks_service_principal_client_secret: ${{ secrets.CLIENT }}
 
     - name: Import Existing Resource Group
@@ -48,7 +48,6 @@ jobs:
         TF_VAR_resource_group_name: $(RESOURCEGROUPS)
         TF_VAR_resource_group_location: $(LOCATION)
        
-        TF_VAR_aks_service_principal_app_id: $(PRINCIPLEID)
         TF_VAR_aks_service_principal_client_secret: ${{ secrets.CLIENT }}
 
     - name: Validate Terraform
@@ -57,14 +56,13 @@ jobs:
         TF_VAR_resource_group_name: $(RESOURCEGROUPS)
         TF_VAR_resource_group_location: $(LOCATION)
        
-        TF_VAR_aks_service_principal_app_id: ${{ env.PRINCIPLEID }}
         TF_VAR_aks_service_principal_client_secret: ${{ secrets.CLIENT }}
     - name: Plan Terraform
       run: terraform plan -out aks.tfplan
       env:
         TF_VAR_resource_group_name: $(RESOURCEGROUPS)
         TF_VAR_resource_group_location: $(LOCATION)
-        TF_VAR_aks_service_principal_app_id: ${{ secrets.AZURE_CREDENTIALS }}
+        
         TF_VAR_aks_service_principal_client_secret: ${{ secrets.CLIENT }}
     - name: Apply Terraform
       if: github.ref == 'refs/heads/main'
@@ -72,7 +70,7 @@ jobs:
       env:
         TF_VAR_resource_group_name: $(RESOURCEGROUPS)
         TF_VAR_resource_group_location: $(LOCATION)
-        TF_VAR_aks_service_principal_app_id: ${{ secrets.AZURE_CREDENTIALS }}
+      
         TF_VAR_aks_service_principal_client_secret: ${{ secrets.CLIENT }}
 
     - name: Generate Kubeconfig File
