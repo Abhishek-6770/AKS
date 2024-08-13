@@ -9,7 +9,7 @@ on:
 jobs:
   setup-terraform:
     name: Set Up and Deploy AKS Cluster
-    runs-on: macos-latest
+    runs-on: self hosted
 
     steps:
     - name: Install Node.js (if needed)
