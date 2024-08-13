@@ -35,7 +35,7 @@ jobs:
     - name: Initialize Terraform
       run: terraform init
       env:
-        TF_VAR_resource_group_name: ${{ secrets.RESOURCEGROUPS }}
+        TF_VAR_resource_group_name: ${{ env.RESOURCEGROUPS }}
         TF_VAR_resource_group_location: ${{ env.LOCATION }}
        
         TF_VAR_aks_service_principal_app_id: ${{ env.PRINCIPLEID }}
@@ -45,14 +45,14 @@ jobs:
       run: |
         terraform import azurerm_resource_group.k8s /subscriptions/${{ secrets.SUBSCRIPTION }}/resourceGroups/${{ secrets.RESOURCEGROUPS }} || echo "Resource group already managed."
       env:
-        TF_VAR_resource_group_name: ${{ secrets.RESOURCEGROUPS }}
+        TF_VAR_resource_group_name: ${{ env.RESOURCEGROUPS }}
         TF_VAR_aks_service_principal_app_id: ${{ env.PRINCIPLEID }}
         TF_VAR_aks_service_principal_client_secret: ${{ secrets.CLIENT }}
 
     - name: Validate Terraform
       run: terraform validate
       env:
-        TF_VAR_resource_group_name: ${{ secrets.RESOURCEGROUPS }}
+        TF_VAR_resource_group_name: ${{ env.RESOURCEGROUPS }}
         TF_VAR_resource_group_location: ${{ env.LOCATION }}
         TF_VAR_aks_service_principal_app_id: ${{ env.PRINCIPLEID }}
         TF_VAR_aks_service_principal_client_secret: ${{ secrets.CLIENT }}
@@ -61,7 +61,7 @@ jobs:
     - name: Plan Terraform
       run: terraform plan -out aks.tfplan
       env:
-        TF_VAR_resource_group_name: ${{ secrets.RESOURCEGROUPS }}
+        TF_VAR_resource_group_name: ${{ env.RESOURCEGROUPS }}
         TF_VAR_resource_group_location: ${{ env.LOCATION }}
         TF_VAR_aks_service_principal_app_id: ${{ env.PRINCIPLEID }}
         TF_VAR_aks_service_principal_client_secret: ${{ secrets.CLIENT }}
@@ -71,7 +71,7 @@ jobs:
       if: github.ref == 'refs/heads/main'
       run: terraform apply -auto-approve aks.tfplan
       env:
-        TF_VAR_resource_group_name: ${{ secrets.RESOURCEGROUPS }}
+        TF_VAR_resource_group_name: ${{ env.RESOURCEGROUPS }}
         TF_VAR_resource_group_location: ${{ env.LOCATION }}
         TF_VAR_aks_service_principal_app_id: ${{ env.PRINCIPLEID }}
         TF_VAR_aks_service_principal_client_secret: ${{ secrets.CLIENT }} 
