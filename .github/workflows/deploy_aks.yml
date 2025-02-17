@@ -1,3 +1,81 @@
+# name: Deploy AKS Cluster
+
+# on:
+#   push:
+#     branches:
+#       - main
+#   workflow_dispatch:
+
+# jobs:
+#   setup-terraform:
+#     name: Set Up and Deploy AKS Cluster
+#     runs-on: ubuntu-latest
+    
+#     steps:
+#     - name: Install Node.js (if needed)
+#       run: |
+#         if ! command -v node &> /dev/null
+#         then
+#           arch -arm64 brew install node
+#         fi
+        
+#     - name: Checkout Repository
+#       uses: actions/checkout@v3
+
+#     - name: Set up Terraform
+#       uses: hashicorp/setup-terraform@v2
+#       with:
+#         terraform_version: 1.9.4  # Replace with the Terraform version you are using
+
+#     - name: Azure Login
+#       uses: azure/login@v1
+#       with:
+#         creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+#     - name: Initialize Terraform
+#       run: terraform init
+#       env:
+#         TF_VAR_resource_group_name: $(RESOURCEGROUPS)
+#         TF_VAR_resource_group_location: $(LOCATION)
+       
+        
+#         TF_VAR_aks_service_principal_client_secret: ${{ secrets.CLIENT }}
+
+#     - name: Import Existing Resource Group
+#       run: |
+#         terraform import azurerm_resource_group.k8s /subscriptions/28e1e42a-4438-4c30-9a5f-7d7b488fd883/resourceGroups/664-b4842b88-create-an-aks-cluster-in-azure-with-t || echo "Resource group already managed."
+#       env:
+#         TF_VAR_resource_group_name: $(RESOURCEGROUPS)
+#         TF_VAR_resource_group_location: $(LOCATION)
+       
+#         TF_VAR_aks_service_principal_client_secret: ${{ secrets.CLIENT }}
+
+#     - name: Validate Terraform
+#       run: terraform validate
+#       env:
+#         TF_VAR_resource_group_name: $(RESOURCEGROUPS)
+#         TF_VAR_resource_group_location: $(LOCATION)
+       
+#         TF_VAR_aks_service_principal_client_secret: ${{ secrets.CLIENT }}
+#     - name: Plan Terraform
+#       run: terraform plan -out aks.tfplan
+#       env:
+#         TF_VAR_resource_group_name: $(RESOURCEGROUPS)
+#         TF_VAR_resource_group_location: $(LOCATION)
+        
+#         TF_VAR_aks_service_principal_client_secret: ${{ secrets.CLIENT }}
+#     - name: Apply Terraform
+#       if: github.ref == 'refs/heads/main'
+#       run: terraform apply -auto-approve aks.tfplan
+#       env:
+#         TF_VAR_resource_group_name: $(RESOURCEGROUPS)
+#         TF_VAR_resource_group_location: $(LOCATION)
+      
+#         TF_VAR_aks_service_principal_client_secret: ${{ secrets.CLIENT }}
+
+#     - name: Generate Kubeconfig File
+#       run: echo "$(terraform output kube_config)" > ./azurek8s
+
 name: Deploy AKS Cluster
 
 on:
@@ -16,7 +94,7 @@ jobs:
       run: |
         if ! command -v node &> /dev/null
         then
-          arch -arm64 brew install node
+          brew install node
         fi
         
     - name: Checkout Repository
@@ -25,7 +103,7 @@ jobs:
     - name: Set up Terraform
       uses: hashicorp/setup-terraform@v2
       with:
-        terraform_version: 1.9.4  # Replace with the Terraform version you are using
+        terraform_version: 1.9.4
 
     - name: Azure Login
       uses: azure/login@v1
@@ -33,44 +111,49 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - name: Initialize Terraform
-      run: terraform init
+      run: |
+        set -x
+        terraform init
       env:
-        TF_VAR_resource_group_name: $(RESOURCEGROUPS)
-        TF_VAR_resource_group_location: $(LOCATION)
-       
-        
+        TF_VAR_resource_group_name: ${{ secrets.RESOURCEGROUPS }}
+        TF_VAR_resource_group_location: ${{ secrets.LOCATION }}
         TF_VAR_aks_service_principal_client_secret: ${{ secrets.CLIENT }}
 
     - name: Import Existing Resource Group
       run: |
-        terraform import azurerm_resource_group.k8s /subscriptions/28e1e42a-4438-4c30-9a5f-7d7b488fd883/resourceGroups/664-b4842b88-create-an-aks-cluster-in-azure-with-t || echo "Resource group already managed."
+        set -x
+        terraform import azurerm_resource_group.k8s /subscriptions/28e1e42a-4438-4c30-9a5f-7d7b488fd883/resourceGroups/664-b4842b88-create-an-aks-cluster-in-azure-with-t || echo "Resource group already exists"
       env:
-        TF_VAR_resource_group_name: $(RESOURCEGROUPS)
-        TF_VAR_resource_group_location: $(LOCATION)
-       
+        TF_VAR_resource_group_name: ${{ secrets.RESOURCEGROUPS }}
+        TF_VAR_resource_group_location: ${{ secrets.LOCATION }}
         TF_VAR_aks_service_principal_client_secret: ${{ secrets.CLIENT }}
 
     - name: Validate Terraform
-      run: terraform validate
+      run: |
+        set -x
+        terraform validate
       env:
-        TF_VAR_resource_group_name: $(RESOURCEGROUPS)
-        TF_VAR_resource_group_location: $(LOCATION)
-       
+        TF_VAR_resource_group_name: ${{ secrets.RESOURCEGROUPS }}
+        TF_VAR_resource_group_location: ${{ secrets.LOCATION }}
         TF_VAR_aks_service_principal_client_secret: ${{ secrets.CLIENT }}
+
     - name: Plan Terraform
-      run: terraform plan -out aks.tfplan
+      run: |
+        set -x
+        terraform plan -out aks.tfplan
       env:
-        TF_VAR_resource_group_name: $(RESOURCEGROUPS)
-        TF_VAR_resource_group_location: $(LOCATION)
-        
+        TF_VAR_resource_group_name: ${{ secrets.RESOURCEGROUPS }}
+        TF_VAR_resource_group_location: ${{ secrets.LOCATION }}
         TF_VAR_aks_service_principal_client_secret: ${{ secrets.CLIENT }}
+
     - name: Apply Terraform
       if: github.ref == 'refs/heads/main'
-      run: terraform apply -auto-approve aks.tfplan
+      run: |
+        set -x
+        terraform apply -auto-approve aks.tfplan
       env:
-        TF_VAR_resource_group_name: $(RESOURCEGROUPS)
-        TF_VAR_resource_group_location: $(LOCATION)
-      
+        TF_VAR_resource_group_name: ${{ secrets.RESOURCEGROUPS }}
+        TF_VAR_resource_group_location: ${{ secrets.LOCATION }}
         TF_VAR_aks_service_principal_client_secret: ${{ secrets.CLIENT }}
 
     - name: Generate Kubeconfig File
