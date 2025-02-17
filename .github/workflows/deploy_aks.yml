@@ -76,14 +76,6 @@
 #     - name: Generate Kubeconfig File
 #       run: echo "$(terraform output kube_config)" > ./azurek8s
 
-name: Deploy AKS Cluster
-
-on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
-
 jobs:
   setup-terraform:
     name: Set Up and Deploy AKS Cluster
@@ -109,6 +101,11 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Copy SSH Public Key
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PUBLIC_KEY }}" > ~/.ssh/id_rsa.pub
 
     - name: Initialize Terraform
       run: |
