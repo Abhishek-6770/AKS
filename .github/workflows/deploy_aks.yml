@@ -119,7 +119,7 @@ jobs:
     - name: Import Existing Resource Group
       run: |
         set -x
-        terraform import azurerm_resource_group.k8s /subscriptions/28e1e42a-4438-4c30-9a5f-7d7b488fd883/resourceGroups/664-2667546e-create-an-aks-cluster-in-azure-with-t || echo "Resource group already exists"
+        terraform import azurerm_resource_group.k8s /subscriptions/28e1e42a-4438-4c30-9a5f-7d7b488fd883/resourceGroups/664-3606a87d-create-an-aks-cluster-in-azure-with-t || echo "Resource group already exists"
       
       env:
         TF_VAR_resource_group_name: ${{ secrets.RESOURCEGROUPS }}
