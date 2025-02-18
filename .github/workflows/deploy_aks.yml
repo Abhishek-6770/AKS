@@ -43,7 +43,7 @@ on:
 
 #     - name: Import Existing Resource Group
 #       run: |
-#         terraform import azurerm_resource_group.k8s /subscriptions/28e1e42a-4438-4c30-9a5f-7d7b488fd883/resourceGroups/664-b4842b88-create-an-aks-cluster-in-azure-with-t || echo "Resource group already managed."
+#         terraform import azurerm_resource_group.k8s /subscriptions/80ea84e8-afce-4851-928a-9e2219724c69/resourceGroups/664-b4842b88-create-an-aks-cluster-in-azure-with-t || echo "Resource group already managed."
 #       env:
 #         TF_VAR_resource_group_name: $(RESOURCEGROUPS)
 #         TF_VAR_resource_group_location: $(LOCATION)
