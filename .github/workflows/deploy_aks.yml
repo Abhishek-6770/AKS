@@ -121,7 +121,7 @@ jobs:
     - name: Import Existing Resource Group
       run: |
         set -x
-        terraform import azurerm_resource_group.k8s /subscriptions/28e1e42a-4438-4c30-9a5f-7d7b488fd883/resourceGroups/664-4bab6245-create-an-aks-cluster-in-azure-with-t || echo "Resource group already exists"
+        terraform import azurerm_resource_group.k8s /subscriptions/9734ed68-621d-47ed-babd-269110dbacb1/resourceGroups/664-4bab6245-create-an-aks-cluster-in-azure-with-t || echo "Resource group already exists"
       
       env:
         TF_VAR_resource_group_name: $(RESOURCEGROUPS)
@@ -147,7 +147,7 @@ jobs:
         TF_VAR_aks_service_principal_client_secret: ${{ secrets.CLIENT }}
 
     - name: Apply Terraform
-      if: github.ref == 'refs/heads/main'
+      if: github.ref == 'refs/heads/feature'
       run: |
         set -x
         terraform apply -auto-approve aks.tfplan
