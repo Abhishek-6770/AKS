@@ -147,7 +147,7 @@ jobs:
         TF_VAR_aks_service_principal_client_secret: ${{ secrets.CLIENT }}
 
     - name: Apply Terraform
-      if: github.ref == 'refs/heads/feature'
+      # if: github.ref == 'refs/heads/feature'
       run: |
         set -x
         terraform apply -auto-approve aks.tfplan
