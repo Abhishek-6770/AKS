@@ -17,6 +17,6 @@ provider "azurerm" {
 
 # Import the Azure Resource Group
 resource "azurerm_resource_group" "k8s" {
-  name     = "AKS"
+  name     = "664-2667546e-create-an-aks-cluster-in-azure-with-t"
   location = "South Central US"
 }
